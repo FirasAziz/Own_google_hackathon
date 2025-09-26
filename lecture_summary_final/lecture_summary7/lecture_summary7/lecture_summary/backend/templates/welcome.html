@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عَون - Smart Lecture Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='welcome.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Amiri';
+            src: url('{{ url_for("static", filename="fonts/Amiri-Bold.ttf") }}') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo-icon">
+                <span class="logo-text">عَون</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#how-it-works" class="nav-link">How It Works</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="{{ url_for('index') }}" class="nav-cta">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-background">
+            <img src="{{ url_for('static', filename='images/WhatsApp Image 2025-09-25 at 5.15.23 PM.jpeg') }}" alt="Educational Background" class="hero-bg-image">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="title-highlight">Smart Lecture Assistant</span>
+                    <br>Transform Your Voice into Knowledge
+                </h1>
+                <p class="hero-description">
+                    Discover the power of smart learning! Upload your lecture audio and get intelligent summaries, 
+                    personalized AI tutor, and interactive quizzes to enhance your understanding.
+                </p>
+                <div class="hero-actions">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">
+                        Start Your Learning Journey
+                    </a>
+                    <a href="#demo" class="btn btn-secondary">
+                        Watch Demo
+                    </a>
+                </div>
+                
+            </div>
+            <div class="hero-visual">
+                <div class="visual-container">
+                    <div class="floating-card card-1">
+                        <img src="{{ url_for('static', filename='images/WhatsApp Image 2025-09-25 at 5.00.01 PM.jpeg') }}" alt="Upload Lecture" class="card-image">
+                        <div class="card-content">
+                            <div class="card-text">Upload Lecture</div>
+                        </div>
+                    </div>
+                    <div class="floating-card card-2">
+                        <img src="{{ url_for('static', filename='images/WhatsApp Image 2025-09-25 at 5.13.30 PM.jpeg') }}" alt="Smart Conversion" class="card-image">
+                        <div class="card-content">
+                            <div class="card-text">Smart Conversion</div>
+                        </div>
+                    </div>
+                    <div class="floating-card card-3">
+                        <img src="{{ url_for('static', filename='images/WhatsApp Image 2025-09-25 at 5.13.45 PM.jpeg') }}" alt="AI Tutor" class="card-image">
+                        <div class="card-content">
+                            <div class="card-text">AI Tutor</div>
+                        </div>
+                    </div>
+                    <div class="floating-card card-4">
+                        <img src="{{ url_for('static', filename='images/WhatsApp Image 2025-09-25 at 6.17.19 PM.jpeg') }}" alt="Interactive Quiz" class="card-image">
+                        <div class="card-content">
+                            <div class="card-text">Interactive Quiz</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Key Features</h2>
+                <p class="section-subtitle">Discover how Lecture Assist can revolutionize your learning experience</p>
+            </div>
+            <div class="features-grid three-columns">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="icon">📝</span>
+                    </div>
+                    <h3>Intelligent Summaries</h3>
+                    <p>Automatically generate comprehensive and organized summaries from lecture content</p>
+                    <div class="feature-highlight">Automatic</div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="icon">🤖</span>
+                    </div>
+                    <h3>AI Tutor</h3>
+                    <p>Interact with a smart personal tutor that explains content in English</p>
+                    <div class="feature-highlight">24/7</div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="icon">🎯</span>
+                    </div>
+                    <h3>Interactive Quizzes</h3>
+                    <p>Test your understanding with smart customized questions and instant evaluation</p>
+                    <div class="feature-highlight">Instant Feedback</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-subtitle">A simple journey from audio lecture to interactive learning</p>
+            </div>
+            <div class="steps-container">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-icon">🎤</div>
+                        <h3>Upload Lecture</h3>
+                        <p>Upload your audio file easily and quickly</p>
+                    </div>
+                </div>
+                
+                <div class="step-arrow">→</div>
+                
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-icon">📝</div>
+                        <h3>Smart Conversion</h3>
+                        <p>Convert audio to text and organized summaries</p>
+                    </div>
+                </div>
+                
+                <div class="step-arrow">→</div>
+                
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-icon">🤖</div>
+                        <h3>AI Tutor</h3>
+                        <p>Interact with a personal AI tutor in English</p>
+                    </div>
+                </div>
+                
+                <div class="step-arrow">→</div>
+                
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-icon">🎯</div>
+                        <h3>Interactive Quiz</h3>
+                        <p>Test your understanding with smart customized questions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-container">
+            <div class="cta-content">
+                <h2>Ready to Start Your Learning Journey?</h2>
+                <p>Join thousands of students who trust Lecture Assist to enhance their learning experience</p>
+                <div class="cta-buttons">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">
+                        Start Free Now
+                    </a>
+                    <a href="#features" class="btn btn-outline">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo-icon">
+                    <span class="logo-text">عَون</span>
+                </div>
+                <p class="footer-description">
+                    Smart lecture assistant that transforms your voice into knowledge
+                </p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 عَون. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all feature cards and benefit items
+        document.querySelectorAll('.feature-card, .benefit-item').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

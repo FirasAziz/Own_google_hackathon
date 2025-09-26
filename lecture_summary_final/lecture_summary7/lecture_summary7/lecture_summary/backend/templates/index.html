@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture Assist - Upload Audio Lecture</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='welcome.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Amiri';
+            src: url('{{ url_for("static", filename="fonts/Amiri-Bold.ttf") }}') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+    </style>
+    
+</head>
+<body>
+    <!-- Minimal Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo-icon">
+                <span class="logo-text">عَون</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Full-screen modest upload section without navbar, free on the page -->
+    <section class="hero-section" style="padding: 6rem 0 4rem;">
+        <div class="hero-container" style="grid-template-columns: 1fr; gap: 2rem;">
+            <div class="hero-content" style="max-width: 820px;">
+                <p class="hero-description" style="margin-top: 0;">
+                    Upload your lecture audio to generate organized notes, a professional PDF, and more.
+                </p>
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="alert">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data" class="upload-form">
+                    <div class="name-input-section">
+                        <label for="studentName" class="name-label">What's your name?</label>
+                        <input type="text" name="student_name" id="studentName" class="name-input" placeholder="Enter your name for personalized tutoring" required>
+                    </div>
+
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-content">
+                            <h3>Drop your audio file here</h3>
+                            <p>or click to browse</p>
+                            <p class="file-types">Supports: MP3, WAV, M4A, FLAC</p>
+                        </div>
+                        <input type="file" name="audio" id="audioInput" accept=".mp3,.wav,.m4a,.flac" required>
+                    </div>
+
+                    <div class="file-info" id="fileInfo" style="display: none;">
+                        <div class="file-details">
+                            <span class="file-name" id="fileName"></span>
+                            <span class="file-size" id="fileSize"></span>
+                        </div>
+                        <button type="button" class="remove-file" id="removeFile">Remove</button>
+                    </div>
+
+                    <div style="text-align: center; margin: 2rem 0;">
+                        <button type="submit" class="btn btn-primary" id="generateBtn" disabled>
+                            <span class="btn-text">Generate Notes</span>
+                            <span class="btn-loading" style="display: none;">Processing...</span>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="features" style="background: transparent; border: 1px solid var(--border-light);">
+                    <h3>What you'll get:</h3>
+                    <ul>
+                        <li>Comprehensive lecture notes</li>
+                        <li>Professional PDF document</li>
+                        <li>Key concepts highlighted</li>
+                        <li>Structured summaries</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dense info section to avoid empty spaces -->
+    <section class="features-section" style="padding: 3rem 0;">
+        <div class="section-container">
+            <div class="features-grid three-columns">
+                <div class="feature-card">
+                    <h3>Supported Formats</h3>
+                    <p>MP3, WAV, M4A, FLAC up to 100MB per file</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Privacy</h3>
+                    <p>Your files are used only to generate your documents</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Next Steps</h3>
+                    <p>After upload, notes are generated and a PDF is created</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const audioInput = document.getElementById('audioInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const removeFile = document.getElementById('removeFile');
+        const generateBtn = document.getElementById('generateBtn');
+        const form = document.querySelector('.upload-form');
+
+        // Drag and drop functionality
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        uploadArea.addEventListener('click', () => {
+            audioInput.click();
+        });
+
+        audioInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        removeFile.addEventListener('click', () => {
+            audioInput.value = '';
+            fileInfo.style.display = 'none';
+            generateBtn.disabled = true;
+            uploadArea.style.display = 'block';
+        });
+
+        function handleFile(file) {
+            // Validate file type
+            const allowedTypes = ['audio/mp3', 'audio/wav', 'audio/m4a', 'audio/flac', 'audio/mpeg'];
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+            const allowedExtensions = ['mp3', 'wav', 'm4a', 'flac'];
+            
+            if (!allowedExtensions.includes(fileExtension)) {
+                alert('Please select a valid audio file (MP3, WAV, M4A, or FLAC)');
+                return;
+            }
+
+            // Update UI
+            fileName.textContent = file.name;
+            fileSize.textContent = formatFileSize(file.size);
+            fileInfo.style.display = 'flex';
+            uploadArea.style.display = 'none';
+            generateBtn.disabled = false;
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Form submission with loading state
+        form.addEventListener('submit', (e) => {
+            const btnText = document.querySelector('.btn-text');
+            const btnLoading = document.querySelector('.btn-loading');
+            
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline';
+            generateBtn.disabled = true;
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo-icon">
+                    <span class="logo-text">عَون</span>
+                </div>
+                <p class="footer-description">
+                    Smart lecture assistant that transforms your voice into knowledge
+                </p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 عَون. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

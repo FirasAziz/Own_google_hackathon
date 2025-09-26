@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عون - AI Tutor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='welcome.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='tutor.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Amiri';
+            src: url('{{ url_for("static", filename="fonts/Amiri-Bold.ttf") }}') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        /* Subtle alive feel */
+        .alive-bg {
+            position: absolute;
+            inset: -10% -10% -10% -10%;
+            background: radial-gradient(40% 40% at 20% 30%, rgba(139,154,107,0.10) 0%, rgba(139,154,107,0.0) 60%),
+                        radial-gradient(35% 35% at 80% 20%, rgba(74,91,42,0.10) 0%, rgba(74,91,42,0.0) 60%),
+                        radial-gradient(45% 45% at 50% 80%, rgba(164,179,139,0.10) 0%, rgba(164,179,139,0.0) 60%);
+            filter: blur(20px);
+            animation: floatSoft 18s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+        @keyframes floatSoft {
+            0%   { transform: translate3d(0, 0, 0) scale(1); }
+            50%  { transform: translate3d(10px, -12px, 0) scale(1.02); }
+            100% { transform: translate3d(-8px, 10px, 0) scale(1.01); }
+        }
+        .pulse-soft {
+            animation: pulseSoft 2.4s ease-in-out infinite;
+        }
+        @keyframes pulseSoft {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(107,124,74,0.25); }
+            50%      { transform: scale(1.02); box-shadow: 0 8px 24px rgba(107,124,74,0.20); }
+        }
+        .btn {
+            transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+        }
+        .btn:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <!-- Top navbar with logo (same style as other pages) -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo-icon">
+                <span class="logo-text">عون</span>
+            </div>
+            <div class="nav-timer">
+                <span class="timer-icon">⏱️</span>
+                <span id="sessionTimer">00:00</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Clean boxed layout (calm card) -->
+    <section class="hero-section" style="padding: 8rem 0 4rem; position: relative; overflow: hidden;">
+        <div class="alive-bg"></div>
+        <div class="hero-container" style="grid-template-columns: 1fr; position: relative; z-index: 1;">
+            <div class="card" style="max-width: 1200px; margin: 0 auto; box-shadow: 0 16px 36px var(--shadow); border: 1px solid var(--border-light); border-radius: 20px;">
+                <div class="header">
+                    <h1 style="margin-bottom: .5rem;">عون - معلمك الذكي</h1>
+                    <p style="color: var(--text-light);">تعلم بذكاء مع عون، معلمك الشخصي القائم على الذكاء الاصطناعي</p>
+                </div>
+                <div class="hero-badge pulse-soft"><span>عون</span></div>
+                <h1 class="hero-title"><span class="title-highlight">عون - معلمك الذكي</span></h1>
+                <p class="hero-description">تعلم بذكاء مع عون، معلمك الشخصي القائم على الذكاء الاصطناعي</p>
+
+                <!-- Main Layout -->
+                <div class="main-layout">
+                    <!-- Left Panel - AI Tutor -->
+                    <div class="tutor-panel">
+                        <div class="panel-header">
+                            <h2>عون</h2>
+                        </div>
+                        <div class="tutor-content">
+                            <div class="tutor-message">
+                                <p id="tutorMessage">مرحباً! أنا عون، معلمك الذكي. سأقوم بشرح محاضرك باللغة العربية وأطرح عليك أسئلة لاختبار فهمك. هل أنت مستعد للبدء؟</p>
+                            </div>
+                            <div class="tutor-avatar">
+                                <div class="agent-circle" id="agentSpeakingIcon" aria-label="عون يتحدث">
+                                    <div class="pulse-ring"></div>
+                                    <div class="pulse-ring-2"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="session-controls">
+                                <button id="muteButton" class="mute-btn" disabled>
+                                    <span id="muteIcon">🎤</span>
+                                    <span id="muteText">كتم</span>
+                                </button>
+                                <div class="status-indicator">
+                                    <span id="statusText">جاري الاتصال...</span>
+                                </div>
+                                <button id="endSessionBtn" class="end-session-btn">إنهاء الجلسة</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Panels -->
+                    <div class="right-panels">
+                        <!-- Student Information -->
+                        <div class="info-panel">
+                            <div class="panel-header">
+                                <h3>معلومات الطالب</h3>
+                            </div>
+                            <div class="student-info">
+                                <div class="student-avatar">
+                                    <div class="avatar-circle">👨‍🎓</div>
+                                </div>
+                                <div class="student-details">
+                                    <h4 id="studentName">طالب</h4>
+                                    <p class="student-role">جلسة تعليمية</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lecture Topics -->
+                        <div class="info-panel">
+                            <div class="panel-header">
+                                <h3>مواضيع المحاضرة</h3>
+                            </div>
+                            <div class="topics-list" id="topicsList">
+                                <div class="topic-item">جاري تحميل المواضيع...</div>
+                            </div>
+                        </div>
+
+                        <!-- Session Notes -->
+                        <div class="info-panel">
+                            <div class="panel-header">
+                                <h3>ملاحظاتك</h3>
+                            </div>
+                            <div class="notes-section">
+                                <textarea id="sessionNotes" placeholder="أضف أفكارك وتذكيراتك هنا..." rows="4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <span>© 2025 عون</span>
+            </div>
+            <div class="footer-right">
+                <span>تعلم بذكاء. ادرس بثقة.</span>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <script src="{{ url_for('static', filename='tutor.js') }}"></script>
+</body>
+</html>

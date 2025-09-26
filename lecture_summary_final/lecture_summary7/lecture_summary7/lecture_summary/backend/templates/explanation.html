@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture Assist - Notes Ready</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='welcome.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Amiri';
+            src: url('{{ url_for("static", filename="fonts/Amiri-Bold.ttf") }}') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        /* Subtle alive feel */
+        .alive-bg {
+            position: absolute;
+            inset: -10% -10% -10% -10%;
+            background: radial-gradient(40% 40% at 20% 30%, rgba(139,154,107,0.10) 0%, rgba(139,154,107,0.0) 60%),
+                        radial-gradient(35% 35% at 80% 20%, rgba(74,91,42,0.10) 0%, rgba(74,91,42,0.0) 60%),
+                        radial-gradient(45% 45% at 50% 80%, rgba(164,179,139,0.10) 0%, rgba(164,179,139,0.0) 60%);
+            filter: blur(20px);
+            animation: floatSoft 18s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+        @keyframes floatSoft {
+            0%   { transform: translate3d(0, 0, 0) scale(1); }
+            50%  { transform: translate3d(10px, -12px, 0) scale(1.02); }
+            100% { transform: translate3d(-8px, 10px, 0) scale(1.01); }
+        }
+        .pulse-soft {
+            animation: pulseSoft 2.4s ease-in-out infinite;
+        }
+        @keyframes pulseSoft {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(107,124,74,0.25); }
+            50%      { transform: scale(1.02); box-shadow: 0 8px 24px rgba(107,124,74,0.20); }
+        }
+        .btn {
+            transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+        }
+        .btn:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <!-- Top navbar with logo (same style as other pages) -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo-icon">
+                <span class="logo-text">عَون</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Clean boxed layout (calm card) -->
+    <section class="hero-section" style="padding: 8rem 0 4rem; position: relative; overflow: hidden;">
+        <div class="alive-bg"></div>
+        <div class="hero-container" style="grid-template-columns: 1fr; position: relative; z-index: 1;">
+            <div class="card" style="max-width: 820px; margin: 0 auto; box-shadow: 0 16px 36px var(--shadow); border: 1px solid var(--border-light); border-radius: 20px;">
+                <div class="header">
+                    <h1 style="margin-bottom: .5rem;">Your notes are ready</h1>
+                    <p style="color: var(--text-light);">A clean, easy-to-read document is prepared for you.</p>
+                </div>
+                <div class="hero-badge pulse-soft"><span>Notes Ready</span></div>
+                <h1 class="hero-title"><span class="title-highlight">Your notes are ready</span></h1>
+                <p class="hero-description">We prepared a clean, easy-to-read document for you. You can download the PDF, start a quick quiz, or continue with the AI tutor.</p>
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="alert">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <div class="features" style="background: #f7fafc; border: 1px solid var(--border-light);">
+                    <h3>What’s inside:</h3>
+                    <ul>
+                        <li>Organized sections with clear headings</li>
+                        <li>Key concepts highlighted</li>
+                        <li>Structured bullet summaries</li>
+                        <li>Professional Arabic-friendly PDF</li>
+                    </ul>
+                </div>
+
+                <div class="action-buttons" style="gap: 0.75rem; flex-direction: row; flex-wrap: wrap; justify-content: center;">
+                    <a href="{{ url_for('download_pdf') }}" class="btn btn-primary">Download PDF</a>
+                    <a href="{{ url_for('tutor') }}" class="btn btn-secondary">AI Tutor</a>
+                    <a href="{{ url_for('quiz') }}" class="btn btn-quiz">Take Quiz</a>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="cta-container">
+            <div class="cta-content">
+                <h2>Need another summary?</h2>
+                <p>Upload a new lecture anytime and keep your notes organized.</p>
+                <div class="cta-buttons">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">Start New Lecture</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
