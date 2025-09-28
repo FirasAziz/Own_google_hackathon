@@ -1,4 +1,4 @@
-# Lecture Assist 🎓
+# OWN-عون 
 
 Transform your audio lectures into comprehensive notes with AI-powered transcription and document generation.
 
